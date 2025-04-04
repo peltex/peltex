@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+  <loc>https://www.peltex.fi/</loc>
+  <lastmod>2019-05-28T14:57:10+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://www.peltex.fi/palvelut.html</loc>
+  <lastmod>2019-05-28T14:57:44+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.peltex.fi/referenssit.html</loc>
+  <lastmod>2019-05-28T14:57:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.peltex.fi/tarjouspyynto.html</loc>
+  <lastmod>2019-05-28T14:58:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+
+</urlset>
