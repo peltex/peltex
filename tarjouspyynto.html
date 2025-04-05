@@ -128,7 +128,7 @@
       </div>
 
       <div class="features_contant">
-        <form class="well form-horizontal" action="https://peltex-cloud-api-apim.azure-api.net/peltex-cloud-api/mail/peltex/tarjouspyynto" method="POST" id="contact_form">
+        <form class="well form-horizontal" action="https://peltex-cloud-api-apim.azure-api.net/mail/peltex/service" method="POST" id="contact_form">
           <div class="messages"></div>
           <!-- Text input-->
 
@@ -289,96 +289,67 @@
 
   <script>
     $("#contact_form").submit(function (event) {
-      event.preventDefault(); //prevent default action
-      let post_url = $(this).attr("action"); //get form action url
-      let request_method = $(this).attr("method"); //get form GET/POST method
+    event.preventDefault(); // Prevent default action
+    let post_url = $(this).attr("action"); // Get form action URL
+    let request_method = $(this).attr("method"); // Get form GET/POST method
 
-      // Initiate Variables With Form Content
-      let name = $("#name").val();
-      let email = $("#email").val();
-      let phone = $("#phone").val();
-      let address = $("#address").val();
+    let name = $("#name").val();
+    let email = $("#email").val();
+    let phone = $("#phone").val();
+    let address = $("#address").val();
 
-      let services_1 = false;
-      let services_2 = false;
-      let services_3 = false;
-      let services_4 = false;
-      let services_5 = false;
-      let services_6 = false;
-      let services_7 = false;
-      let services_8 = false;
+    // Service fields with updated keys
+    let kattoremontti = $('#kattoremontti').is(':checked');
+    let kattoturvatuotteet = $('#kattoturvatuotteet').is(':checked');
+    let lampoeristysTuulensuoja = $('#Lampoeristys-tuulensuoja').is(':checked');
+    let piipunpellitys = $('#piipunpellitys').is(':checked');
+    let ulkoverhous = $('#ulkoverhous').is(':checked');
+    let sadevesijarjestelmat = $('#sadevesijarjestelmat').is(':checked');
+    let ovetJaIkkunat = $('#ovet_ja_ikkunat').is(':checked');
+    let lumenpudotus = $('#lumenpudotus').is(':checked');
+    
+    let info = $("#info").val();
 
-      if ($('#kattoremontti').is(':checked')) {
-        services_1 = true;
-      }
+    const data = {
+      name: name,
+      email: email,
+      phone: phone,
+      address: address,
+      kattoremontti: kattoremontti,
+      kattoturvatuotteet: kattoturvatuotteet,
+      lampoeristysTuulensuoja: lampoeristysTuulensuoja,
+      piipunpellitys: piipunpellitys,
+      ulkoverhous: ulkoverhous,
+      sadevesijarjestelmat: sadevesijarjestelmat,
+      ovetJaIkkunat: ovetJaIkkunat,
+      lumenpudotus: lumenpudotus,
+      info: info
+    };
 
-      if ($('#kattoturvatuotteet').is(':checked')) {
-        services_2 = true;
-      }
+    $.ajax({
+      type: request_method,
+      url: post_url,
+      contentType: "application/json",
+      data: JSON.stringify(data),
+      headers: {
+          "Ocp-Apim-Subscription-Key": "8f492200c2d74bee8e0d1c1331b8dae7"
+      },
+      success: function (response) {
+        if (response == "success") {
+          let alertBox = '<div class="alert alert-success alert-dismissable" tabindex="-1"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Tarjouspyyntölomake on lähetetty onnistuneesti. Otamme teihin yhteyttä mahdollisimman pian.</div>';
 
-      if ($('#Lampoeristys-tuulensuoja').is(':checked')) {
-        services_3 = true;
-      }
+          $('#contact_form').find('.messages').html(alertBox);
+          $('#contact_form')[0].reset(); // Clear the form
+          $('.messages .alert-success').focus(); // Focus on alert
+        } else {
+          let alertBox = '<div class="alert alert-danger alert-dismissable" tabindex="-1"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Pahoittelemme mutta lomakkeen lähettäminen epäonnistui. Kokeile myöhemmin uudestaan. Tarkista myös että kaikki tarvittavat kohdat lomakkeesta on täytetty.</div>';
 
-      if ($('#piipunpellitys').is(':checked')) {
-        services_4 = true;
-      }
-
-      if ($('#ulkoverhous').is(':checked')) {
-        services_5 = true;
-      }
-
-      if ($('#sadevesijarjestelmat').is(':checked')) {
-        services_6 = true;
-      }
-
-      if ($('#ovet_ja_ikkunat').is(':checked')) {
-        services_7 = true;
-      }
-
-      if ($('#lumenpudotus').is(':checked')) {
-        services_8 = true;
-      }
-
-      let info = $("#info").val();
-
-      const data = {
-        name: name,
-        email: email,
-        phone: phone,
-        address: address,
-        info: info,
-        kattoremontti: services_1,
-        kattoturvatuotteet: services_2,
-        lampoeristysTuulensuoja: services_3,
-        piipunpellitys: services_4,
-        ulkoverhous: services_5,
-        sadevesijarjestelmat: services_6,
-        ovetJaIkkunat: services_7,
-        lumenpudotus: services_8
-      }
-
-      $.ajax({
-        type: request_method,
-        url: post_url,
-        data: JSON.stringify(data),
-        success: function (response) {
-          if (response == "success") {
-            // let's compose Bootstrap alert box HTML
-            let alertBox = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Tarjouspyyntölomake on lähetetty onnistuneesti. Otamme teihin yhteyttä mahdollisimman pian.</div>';
-
-            // inject the alert to .messages div in our form
-            $('#contact_form').find('.messages').html(alertBox);
-          } else if (response == "invalid") {
-            // let's compose Bootstrap alert box HTML
-            let alertBox = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Pahoittelemme mutta lomakkeen lähettäminen epäonnistui. Kokeile myöhemmin uudestaan. Tarkista myös että kaikki tarvittavat kohdat lomakkeesta on täytetty sekä ainakin yksi palvelu on valittuna.</div>';
-
-            // inject the alert to .messages div in our form
-            $('#contact_form').find('.messages').html(alertBox);
-          }
+          $('#contact_form').find('.messages').html(alertBox);
+          $('.messages .alert-danger').focus(); // Focus on alert
         }
-      });
+      }
     });
+  });
   </script>
 </body>
 
